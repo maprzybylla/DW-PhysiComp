@@ -1,0 +1,233 @@
+<blocks app="Snap4Arduino 1.2.7, http://snap4arduino.rocks" version="1">
+    
+    <block-definition s="initialize LCD" type="command" category="arduino">
+        <header></header>
+        <code></code>
+        <translations>de:initialisiere LCD&#xD;</translations>
+        <inputs></inputs>
+        <script>
+            <block s="doRun">
+                <block s="reportJSFunction">
+                    <list></list>
+                    <l>if(this.arduino === undefined || this.arduino === null || this.arduino.board === undefined || this.arduino.board === null) {
+                        alert("Is the Arduino connected?") 
+                        return;
+                        }
+                        var myself = this;
+                        var array = [0xF0, 0x0B];
+                        array.push(0xF7);
+                        this.arduino.board.sp.write(new Buffer(array));
+                    </l>
+                </block>
+                <list></list>
+            </block>
+        </script>
+    </block-definition>
+    
+    <block-definition s="turn LCD off" type="command" category="arduino">
+        <header></header>
+        <code></code>
+        <translations>de:schalte LCD ab&#xD;</translations>
+        <inputs></inputs>
+        <script>
+        <block s="doRun">
+            <block s="reportJSFunction">
+                <list></list>
+                <l>if(this.arduino === undefined || this.arduino === null || this.arduino.board === undefined || this.arduino.board === null) {
+                    alert("Is the Arduino connected?") 
+                    return;
+                    }
+                    var myself = this;
+                    var array = [0xF0, 0x0F];
+                    array.push(0xF7);
+                    this.arduino.board.sp.write(new Buffer(array));
+                </l>
+            </block>
+            <list></list>
+        </block>
+        </script>
+    </block-definition>
+    
+    <block-definition s="clear LCD" type="command" category="arduino">
+        <header></header>
+        <code></code>
+        <translations>de:leere LCD&#xD;</translations>
+        <inputs></inputs>
+        <script>
+            <block s="doRun">
+                <block s="reportJSFunction">
+                    <list></list>
+                    <l>if(this.arduino === undefined || this.arduino === null || this.arduino.board === undefined || this.arduino.board === null) {
+                        alert("Is the Arduino connected?")
+                        return;
+                        }
+                        var myself = this;
+                        var array = [0xF0, 0x0C];
+                        array.push(0x20);
+                        array.push(0xF7);
+                        this.arduino.board.sp.write(new Buffer(array));
+                    </l>
+                </block>
+                <list></list>
+            </block>
+        </script>
+    </block-definition>
+    
+    <block-definition s="write %&apos;text&apos; to LCD" type="command" category="arduino">
+        <header></header>
+        <code></code>
+        <translations>de:schreibe _ auf LCD&#xD;</translations>
+        <inputs><input type="%txt"></input></inputs>
+        <script>
+            <block s="doRun">
+                <block s="reportJSFunction">
+                    <list><l>text</l></list>
+                    <l>if(this.arduino === undefined || this.arduino === null || this.arduino.board === undefined || this.arduino.board === null) {
+                        alert("Is the Arduino connected?")
+                        return;
+                        }
+                        var myself = this;
+                        var array = [0xF0, 0x0E];
+                        for (i = 0; i &lt; text.length; i++) {array.push(text.charCodeAt(i))}
+                        array.push(0xF7);
+                        this.arduino.board.sp.write(new Buffer(array));
+                    </l>
+                </block>
+                <list>
+                    <block var="text"/>
+                </list>
+            </block>
+        </script>
+    </block-definition>
+    
+    <block-definition s="set LCD color to r %&apos;red&apos; g %&apos;green&apos; b %&apos;blue&apos;" type="command" category="arduino">
+        <header></header>
+        <code></code>
+        <translations>de:setze LCD-Farbe auf r _ g _ b _&#xD;</translations>
+        <inputs>
+            <input type="%s">255</input>
+            <input type="%s">255</input>
+            <input type="%s">255</input>
+        </inputs>
+        <script>
+            <block s="doRun">
+                <block s="reportJSFunction">
+                    <list>
+                        <l>red</l>
+                        <l>green</l>
+                        <l>blue</l>
+                    </list>
+                    <l>if(this.arduino === undefined || this.arduino === null || this.arduino.board === undefined || this.arduino.board === null) {
+                        alert("Is the Arduino connected?")
+                        return;
+                        }
+                        var myself = this;
+                        var array = [0xF0,0x0D];
+                        array.push(red);
+                        array.push(green);
+                        array.push(blue);
+                        array.push(0xF7);
+                        this.arduino.board.sp.write(new Buffer(array));
+                    </l>
+                </block>
+                <list>
+                    <block var="red"/>
+                    <block var="green"/>
+                    <block var="blue"/>
+                </list>
+            </block>
+        </script>
+    </block-definition>
+    
+    <block-definition s="blink LCD %&apos;state&apos;" type="command" category="arduino">
+        <header></header>
+        <code></code>
+        <translations>de:lasse LCD blinken _&#xD;</translations>
+        <inputs><input type="%b"></input></inputs>
+        <script>
+            <block s="doRun">
+                <block s="reportJSFunction">
+                    <list><l>state</l></list>
+                    <l>if(this.arduino === undefined || this.arduino === null || this.arduino.board === undefined || this.arduino.board === null) {
+                        alert("Is the Arduino connected?")
+                        return;
+                        }
+                        var myself = this;
+                        array = [0xF0, 0x0A];
+                        array.push(state);
+                        array.push(0xF7);
+                        this.arduino.board.sp.write(new Buffer(array));
+                    </l>
+                </block>
+                <list><block var="state"/></list>
+            </block>
+        </script>
+    </block-definition>
+
+    <block-definition s="play melody on pin %&apos;Y&apos; %&apos;S&apos;" type="command" category="arduino"><header></header><code></code><translations>de:spiele Melodie an Pin _ _&#xD;</translations><inputs><input type="%txt">D2<options>D2
+D3
+D4
+D5
+D6
+D7
+D8
+D9
+D10
+D11
+D12
+D13</options></input><input type="%n"></input><input type="%cs"></input></inputs>
+        <script><block s="doWarp"><script><block s="doRun"><block s="reportJSFunction"><list></list><l>tones = Array();&#xD;durations = Array();</l></block><list></list></block><block s="doRun"><block var="S"/><list></list></block><block s="doDeclareVariables"><list><l>tones</l><l>durations</l><l>pause</l></list></block><block s="doSetVar"><l>tones</l><block s="evaluate"><block s="reportJSFunction"><list></list><l>return tones.join(",");</l></block><list></list></block></block><block s="doSetVar"><l>durations</l><block s="evaluate"><block s="reportJSFunction"><list></list><l>return durations.join(",");</l></block><list></list></block></block><block s="doRun"><block s="reifyReporter"><autolambda><custom-block s="send command %txt to Arduino %n"><block s="reportJoinWords"><list><l>analogPlayMelody/</l><block var="Y"/><l>/</l><block var="tones"/><l>/</l><block var="durations"/></list></block><block var="A"/></custom-block></autolambda><list></list></block><list></list></block><block s="doSetVar"><l>pause</l><block s="evaluate"><block s="reportJSFunction"><list></list><l>sum = 0;&#xD;&#xD;for(i = 0; i &lt;= durations.length; i++) {&#xD;  if(parseInt(durations[i]) &gt; 0) {&#xD;   sum += 1000/parseInt(durations[i]);&#xD;  }&#xD;}&#xD;&#xD;return sum/1000;</l></block><list></list></block></block></script></block><block s="doWait"><block var="pause"/></block><block s="doWait"><l>.5</l></block></script></block-definition>
+<block-definition s="play note %&apos;T&apos; for %&apos;D&apos; beats" type="command" category="arduino"><header></header><code></code><translations>de:spiele Note _ mit Notenwert _&#xD;</translations><inputs><input type="%txt">C3<options>00
+B0
+C1
+CS1
+D1
+DS1
+E1
+F1
+FS1
+G1
+GS1
+A1
+AS1
+B1
+C2
+CS2
+D2
+DS2
+E2
+F2
+FS2
+G2
+GS2
+A2
+AS2
+B2
+C3
+CS3
+D3
+DS3
+E3
+F3
+FS3
+G3
+GS3
+A3
+AS3
+B3
+C4
+CS4
+D4
+DS4
+E4
+F4
+FS4
+G4
+GS4
+A4
+AS4
+B4</options></input><input type="%txt">1/4<options>1
+1/2
+1/4
+1/8</options></input></inputs><script><block s="doWarp"><script><block s="doRun"><block s="reportJSFunction"><list><l>T</l><l>D</l></list><l>if(typeof tones == "undefined" || typeof durations == "undefined")&#xD;   return;&#xD;&#xD;if(T == "00") { tones.push(0); }&#xD;if(T == "B0") { tones.push(31); }&#xD;&#xD;if(T == "C1") { tones.push(33); }&#xD;&#xD;if(T == "CS1") { tones.push(35); }&#xD;&#xD;if(T == "D1") { tones.push(37); }&#xD;&#xD;if(T == "DS1") { tones.push(39); }&#xD;&#xD;if(T == "E1") { tones.push(41); }&#xD;&#xD;if(T == "F1") { tones.push(44); }&#xD;&#xD;if(T == "FS1") { tones.push(46); }&#xD;&#xD;if(T == "G1") { tones.push(49); }&#xD;&#xD;if(T == "GS1") { tones.push(52); }&#xD;&#xD;if(T == "A1") { tones.push(55); }&#xD;&#xD;if(T == "AS1") { tones.push(58); }&#xD;&#xD;if(T == "B1") { tones.push(62); }&#xD;&#xD;if(T == "C2") { tones.push(65); }&#xD;&#xD;if(T == "CS2") { tones.push(69); }&#xD;&#xD;if(T == "D2") { tones.push(73); }&#xD;&#xD;if(T == "DS2") { tones.push(78); }&#xD;&#xD;if(T == "E2") { tones.push(82); }&#xD;&#xD;if(T == "F2") { tones.push(87); }&#xD;&#xD;if(T == "FS2") { tones.push(93); }&#xD;&#xD;if(T == "G2") { tones.push(98); }&#xD;&#xD;if(T == "GS2") { tones.push(104); }&#xD;&#xD;if(T == "A2") { tones.push(110); }&#xD;&#xD;if(T == "AS2") { tones.push(117); }&#xD;&#xD;if(T == "B2") { tones.push(123); }&#xD;&#xD;if(T == "C3") { tones.push(131); }&#xD;&#xD;if(T == "CS3") { tones.push(139); }&#xD;&#xD;if(T == "D3") { tones.push(147); }&#xD;&#xD;if(T == "DS3") { tones.push(156); }&#xD;&#xD;if(T == "E3") { tones.push(165); }&#xD;&#xD;if(T == "F3") { tones.push(175); }&#xD;&#xD;if(T == "FS3") { tones.push(185); }&#xD;&#xD;if(T == "G3") { tones.push(196); }&#xD;&#xD;if(T == "GS3") { tones.push(208); }&#xD;&#xD;if(T == "A3") { tones.push(220); }&#xD;&#xD;if(T == "AS3") { tones.push(233); }&#xD;&#xD;if(T == "B3") { tones.push(247); }&#xD;&#xD;if(T == "C4") { tones.push(262); }&#xD;&#xD;if(T == "CS4") { tones.push(277); }&#xD;&#xD;if(T == "D4") { tones.push(294); }&#xD;&#xD;if(T == "DS4") { tones.push(311); }&#xD;&#xD;if(T == "E4") { tones.push(330); }&#xD;&#xD;if(T == "F4") { tones.push(349); }&#xD;&#xD;if(T == "FS4") { tones.push(370); }&#xD;&#xD;if(T == "G4") { tones.push(392); }&#xD;&#xD;if(T == "GS4") { tones.push(415); }&#xD;&#xD;if(T == "A4") { tones.push(440); }&#xD;&#xD;if(T == "AS4") { tones.push(466); }&#xD;&#xD;if(T == "B4") { tones.push(494); }&#xD;&#xD;if(T == "C5") { tones.push(523); }&#xD;&#xD;if(T == "CS5") { tones.push(554); }&#xD;&#xD;if(T == "D5") { tones.push(587); }&#xD;&#xD;if(T == "DS5") { tones.push(622); }&#xD;&#xD;if(T == "E5") { tones.push(659); }&#xD;&#xD;if(T == "F5") { tones.push(698); }&#xD;&#xD;if(T == "FS5") { tones.push(740); }&#xD;&#xD;if(T == "G5") { tones.push(784); }&#xD;&#xD;if(T == "GS5") { tones.push(831); }&#xD;&#xD;if(T == "A5") { tones.push(880); }&#xD;&#xD;if(T == "AS5") { tones.push(932); }&#xD;&#xD;if(T == "B5") { tones.push(988); }&#xD;&#xD;if(T == "C6") { tones.push(1047); }&#xD;&#xD;if(T == "CS6") { tones.push(1109); }&#xD;&#xD;if(T == "D6") { tones.push(1175); }&#xD;&#xD;if(T == "DS6") { tones.push(1245); }&#xD;&#xD;if(T == "E6") { tones.push(1319); }&#xD;&#xD;if(T == "F6") { tones.push(1397); }&#xD;&#xD;if(T == "FS6") { tones.push(1480); }&#xD;&#xD;if(T == "G6") { tones.push(1568); }&#xD;&#xD;if(T == "GS6") { tones.push(1661); }&#xD;&#xD;if(T == "A6") { tones.push(1760); }&#xD;&#xD;if(T == "AS6") { tones.push(1865); }&#xD;&#xD;if(T == "B6") { tones.push(1976); }&#xD;&#xD;if(T == "C7") { tones.push(2093); }&#xD;&#xD;if(T == "CS7") { tones.push(2217); }&#xD;&#xD;if(T == "D7") { tones.push(2349); }&#xD;&#xD;if(T == "DS7") { tones.push(2489); }&#xD;&#xD;if(T == "E7") { tones.push(2637); }&#xD;&#xD;if(T == "F7") { tones.push(2794); }&#xD;&#xD;if(T == "FS7") { tones.push(2960); }&#xD;&#xD;if(T == "G7") { tones.push(3136); }&#xD;&#xD;if(T == "GS7") { tones.push(3322); }&#xD;&#xD;if(T == "A7") { tones.push(3520); }&#xD;&#xD;if(T == "AS7") { tones.push(3729); }&#xD;&#xD;if(T == "B7") { tones.push(3951); }&#xD;&#xD;if(T == "C8") { tones.push(4186); }&#xD;&#xD;if(T == "CS8") { tones.push(4435); }&#xD;&#xD;if(T == "D8") { tones.push(4699); }&#xD;&#xD;if(T == "DS8") { tones.push(4978); }&#xD;&#xD;&#xD;if(D.length &lt;= 2)&#xD;  durations.push(D);&#xD;else if(D.length &gt; 2)&#xD;  durations.push(D.substr(2));</l></block><list><block var="T"/><block var="D"/></list></block></script></block></script></block-definition>
+</blocks>
